@@ -9,9 +9,4 @@ directly (have to make sure the arduino sets the right inputs to high
 impedance, and keep basic code for knowing when to turn the big fan on
 to prevent overheating.)
 
-NOTE: This uses the electric imp beta IDE. This is instead of the
-      planner. Instead of code for the device only you have the pair
-      for every imp of what code is on the device and what code is
-      running as an agent in the cloud.
-
-      Communications with the imp are through the agent.
+_NOTE_: This uses the electric imp beta IDE. This is instead of the planner. Instead of code for the device only you have the pair for every imp of what code is on the device and what code is running as an agent in the cloud. Communications with the imp are through the agent.
