@@ -48,7 +48,12 @@ function chan0_set(value) {
         imp_control = "on";
     }
 
-    local v = value.tofloat();
+    local v = 0.0;
+    try {
+        v = value.tofloat();
+    } catch (e) {
+        server.log("Error converting " + value);
+    }
     if ( v > 1.0) {
         v = 1.0;
     }
