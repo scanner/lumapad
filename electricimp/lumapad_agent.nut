@@ -10,6 +10,7 @@ server.log("Hello from the agent");
 // this agent (and thus the electric imp device attached to this agent.)
 //
 server.log("Set brightness of panel: " + http.agenturl() + "?state=<float between 0 and 1>");
+server.log("Pulse between both LED channels: " + http.agenturl() + "?state=off");
 
 //****************************************************************************
 //
