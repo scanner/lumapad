@@ -5,6 +5,12 @@ server.log("Hello from the lumapad");
 
 led_chan2 <- hardware.pin9;
 led_chan1 <- hardware.pin8;
+imp_control <- hardware.pin1;
+
+// To tell the lumapad arduino that we want the eimp to control the led's we set pin1 high.
+//
+imp_control.configure(DIGITAL_OUT);
+imp_control.write(1);
 
 // For just "off" / "on" control of the two LED channels we bring each output
 // either 'high' or 'low'
@@ -14,8 +20,8 @@ led_chan1 <- hardware.pin8;
 // led_chan2.configure(DIGITAL_OUT);
 // led_chan2.write(0);
 
-led_chan1.configure(PWM_OUT, 1.0/500.0, 1.0);
-led_chan2.configure(PWM_OUT, 1.0/500.0, 1.0);
+led_chan1.configure(PWM_OUT, 1.0/1000.0, 1.0);
+led_chan2.configure(PWM_OUT, 1.0/1000.0, 1.0);
 
 chan1_bright <- 0.0;
 chan2_bright <- 0.0;
@@ -82,20 +88,21 @@ function cycle_leds_up_and_down() {
         return;
     }
     if (going_up == 1) {
-        chan1_bright += 0.1;
+        chan1_bright += 0.01;
         if (chan1_bright > 1.0) {
             going_up = 0;
             chan1_bright = 1.0;
         }
     } else {
-        chan1_bright -= 0.1;
+        chan1_bright -= 0.01;
         if (chan1_bright < 0.0) {
             chan1_bright = 0.0;
             going_up = 1;
         }
     }
     led_chan1.write(chan1_bright);
-    led_chan2.write(1.0 - chan1_bright);
+    // led_chan2.write(1.0 - chan1_bright);
+    led_chan2.write(chan1_bright);
 
     // Go to sleep and wake up a 20th of a second lter. This is going to bump
     // the brightness (up or down) by 10% every 20th of a second.
@@ -110,14 +117,9 @@ function cycle_leds_up_and_down() {
 //
 agent.on("chan0_set", chan0_set);
 
-// Turn both channels off to start (so whenver the eimp crashes or is powered
-// on it is going to do this.. chances in the final code (not this debug/test
-// code) we would not do this because a crash on the eimp should not power down
-// the lights.. that might be confusing to a user.)
+// Turn both channels on to start. When you turn it on you want the lights on, right?
 //
-led_chan1.write(0.0);
-led_chan2.write(0.0);
+led_chan1.write(1.0);
+led_chan2.write(1.0);
 
-// Start the loop that cycles the two LED channels up and down.
-//
-cycle_leds_up_and_down();
+// Now we wait for commands to tell us to do various things.
